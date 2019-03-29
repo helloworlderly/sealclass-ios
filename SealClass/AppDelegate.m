@@ -43,6 +43,7 @@ NSString *const BuglyKey = @"Your BuglyKey";
 
 #pragma mark -
 - (void)configIM {
+    NSAssert(![APPKey isEqualToString:@"Your AppKey"], @"AppKey 不合法，请使用您自己的 AppKey, 注册地址：https://www.rongcloud.cn");
     [IMClient initWithAppKey:APPKey];
     [IMClient setReceiveMessageDelegate:[IMService sharedService] object:nil];
     IMClient.logLevel = RC_Log_Level_Info;

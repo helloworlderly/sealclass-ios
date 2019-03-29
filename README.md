@@ -1,7 +1,7 @@
-#iOS SealClass 源码导读
-本文档介绍了 SealClass 的 Demo 整体框架设计，以及核心流程，为开发者了解 Demo 的主要功能提供指导性说明。SealClass Demo 的 [体验和简介地址](https://www.rongcloud.cn/solution/edu#industry-points)。
+# iOS SealClass 源码导读
+本文档介绍了 SealClass 的 Demo 整体框架设计，以及核心流程，为开发者了解 Demo 的主要功能提供指导性说明。SealClass Demo 的 [体验和简介地址](https://www.rongcloud.cn/solution/edu#industry-points)。APPKey 的需要您到官网注册获取。同时需要您开通音视频服务。
 
-##代码目录介绍
+## 代码目录介绍
 iOS端整体目录结构主要由 Sections，Services，Util，Resources 四个部分组成。
 
 ![](./images/Image1.png)
@@ -14,10 +14,10 @@ iOS端整体目录结构主要由 Sections，Services，Util，Resources 四个�
 
 * Resources 包含了国际化文件，图片资源，以及 Emoji 表情。
 
-##主体业务介绍
+## 主体业务介绍
 SealClass 的主体业务主要在 Sections 文件夹里。分为白板（WhiteBoard），设置（Setting），课堂（Classroom）, 登录（Login）。每个模块按照具体的功能再次进一步划分。
 
-###登录
+### 登录
 ---
 登录模块的 UI 在 `LoginViewController.m` 文件里。相关的业务逻辑实现在 `LoginHelper.m` 文件里。 SealClass 依赖于 IMService，RTCService，ClassroomService。首先要调用 ClassroomService 登录课堂，成功之后调用 IMService 连接 IM 。IM 连接成功之后调用 RTCService 加入房间。  
 
@@ -34,10 +34,10 @@ SealClass 的主体业务主要在 Sections 文件夹里。分为白板（WhiteB
 - (void)classroomDidJoinFail;
 
 ```
-###设置
+### 设置
 ---
 设置模块分为两个页面，一个是展示用户选择的分辨率页面 `SettingViewController.m` ，另一个是选择分辨率的页面 `SelectResolutionController.m` 。
-###课堂
+### 课堂
 ---
 课堂区域主要分为标题栏（Title），通话操作栏（Title），侧边导航栏（ToolPanel），最近共享列表（RecentShared），共享画布区域（MainContainer），消息区（Chat），视频区（VideoList），在线成员列表（PersonList）八个部分。
 
@@ -66,13 +66,13 @@ SealClass 的主体业务主要在 Sections 文件夹里。分为白板（WhiteB
 **在线成员列表**   
 对应于 PersonList 文件夹下的 `PersonListView`文件。助教可以对课堂里边的成成员进行角色以及设备等的控制。
 
-###白板
+### 白板
 ---
 白板模块 `WhiteboardControl`文件里。助教或者讲师点击了共享白板或者新建白板，共享画布区会显示此白板。
 
-##Service部分介绍
+## Service部分介绍
 Service部分由 （音视频）RTCService，（IM）IMService，（课堂）ClaassroomService 三个部分组成。
-###RTCService说明
+### RTCService说明
 ---
 对应于`RTCService` 文件。通过单例模式实现。
 
@@ -291,11 +291,11 @@ Service部分由 （音视频）RTCService，（IM）IMService，（课堂）Cla
 
 ```
 
-###IMService说明
+### IMService说明
 ---
 对应于 `IMService` 文件。通过单例模式实现。主要用于课堂内收发消息，以及接收服务端下发的信令消息。
 
-###ClassroomService说明
+### ClassroomService说明
 ---
 对应于 `ClassroomService ` 文件。通过单例模式实现。所有接口调用均通过代理形式返回结果，需要设置代理监听。
 

@@ -29,4 +29,3 @@ def replace(file,old_str,new_str):
 
 replace("./SealClass/AppDelegate.m",'NSString *const APPKey = ',"NSString *const APPKey = @\"Your AppKey\";\n")
 replace("./SealClass/AppDelegate.m",'NSString *const BuglyKey = ',"NSString *const BuglyKey = @\"Your BuglyKey\";\n")
-replace("./SealClass/Util/HTTP/HTTPUtility.m",'NSString *const BASE_URL = ',"NSString *const BASE_URL = @\"Your Demo Server\";\n")
