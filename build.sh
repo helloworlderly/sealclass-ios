@@ -38,7 +38,7 @@ function pull_sourcecode() {
 }
 
 function pod_update() {
-	pod update --no-repo-update
+	pod update
 }
 
 #清空上次的编译输出

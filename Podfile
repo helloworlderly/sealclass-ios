@@ -5,6 +5,6 @@ target 'SealClass' do
   pod 'Masonry', '~> 1.1.0'
   pod 'MJRefresh', '~> 3.1.15.7'
   pod 'MBProgressHUD', '~> 1.1.0'
-  pod 'RongRTCLib','~>0.0.2'
+  pod 'RongRTCLib'
   pod 'Bugly','2.5.0'
 end
