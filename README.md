@@ -71,7 +71,7 @@ SealClass 的主体业务主要在 Sections 文件夹里。分为白板（WhiteB
 白板模块 `WhiteboardControl`文件里。助教或者讲师点击了共享白板或者新建白板，共享画布区会显示此白板。
 
 ## Service 部分介绍
-Service部分由 （音视频）RTCService，（IM）IMService，（课堂）ClaassroomService 三个部分组成。
+Service 部分由 （音视频）RTCService，（IM）IMService，（课堂）ClaassroomService 三个部分组成。
 ### RTCService 说明
 ---
 对应于`RTCService` 文件。通过单例模式实现。
