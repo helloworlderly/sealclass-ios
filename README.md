@@ -6,9 +6,9 @@ iOS端整体目录结构主要由 Sections，Services，Util，Resources 四个�
 
 ![](./images/Image1.png)
 
-* Section 由4部分组成，每个部分都包含了整个功能的全部实现。WhiteBoard 白板功能，Setting 设置功能， Classroom 课堂功能，Login 登录功能。
+* Section 由四部分组成，每个部分都包含了整个功能的全部实现。WhiteBoard 白板功能，Setting 设置功能， Classroom 课堂功能，Login 登录功能。
 
-* Services 由3部分组成，IM 管理类，Classroom 管理类， RTC 管理类。
+* Services 由三部分组成，IM 管理类，Classroom 管理类， RTC 管理类。
 
 * Util 通用的一些工具类。
 
@@ -70,7 +70,7 @@ SealClass 的主体业务主要在 Sections 文件夹里。分为白板（WhiteB
 ---
 白板模块 `WhiteboardControl`文件里。助教或者讲师点击了共享白板或者新建白板，共享画布区会显示此白板。
 
-## Service部分介绍
+## Service 部分介绍
 Service部分由 （音视频）RTCService，（IM）IMService，（课堂）ClaassroomService 三个部分组成。
 ### RTCService说明
 ---
