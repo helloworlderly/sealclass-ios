@@ -1,0 +1,11 @@
+DerivedData
+bin
+bin_tmp
+build
+SealClass.xcodeproj/project.xcworkspace/xcuserdata
+SealClass.xcodeproj/xcuserdata/*
+SealClass.xcworkspace/xcshareddata/*
+SealClass.xcworkspace/xcuserdata/*
+
+Podfile.lock
+Pods/*

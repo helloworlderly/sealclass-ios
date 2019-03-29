@@ -1,0 +1,19 @@
+//
+//  SealClassPCH.pch
+//  SealClass
+//
+//  Created by Sin on 2019/3/4.
+//  Copyright © 2019年 RongCloud. All rights reserved.
+//
+
+#ifndef SealClassPCH_pch
+#define SealClassPCH_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#import "Macro.h"
+#import "UIColor+RCColor.h"
+
+
+#endif /* SealClassPCH_pch */
