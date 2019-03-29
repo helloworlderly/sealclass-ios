@@ -1,5 +1,10 @@
 # iOS SealClass 源码导读
-本文档介绍了 SealClass 的 Demo 整体框架设计，以及核心流程，为开发者了解 Demo 的主要功能提供指导性说明。SealClass Demo 的 [体验和简介地址](https://www.rongcloud.cn/solution/edu#industry-points)。APPKey 的需要您到官网注册获取。同时需要您开通音视频服务。
+本文档介绍了 SealClass 的整体框架设计和核心流程，为开发者了解 SealClass 的主要功能提供指导性说明。[体验 SealClass](https://www.rongcloud.cn/solution/edu#pc-mod-demo)。
+
+**前期准备**
+1. [注册融云开发者](https://www.rongcloud.cn)，创建应用后获取 APPKey。
+
+2. 开通音视频服务。[查看音视频计费明细](https://www.rongcloud.cn/docs/call.html#billing)
 
 ## 代码目录介绍
 iOS 端整体目录结构主要由 Sections，Services，Util，Resources 四个部分组成。
