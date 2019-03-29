@@ -2,9 +2,20 @@
 本文档介绍了 SealClass 的整体框架设计和核心流程，为开发者了解 SealClass 的主要功能提供指导性说明。[体验 SealClass](https://www.rongcloud.cn/solution/edu#pc-mod-demo)。
 
 **前期准备**
+
 1. [注册融云开发者](https://www.rongcloud.cn)，创建应用后获取 APPKey。
 
 2. 开通音视频服务。[查看音视频计费明细](https://www.rongcloud.cn/docs/call.html#billing)
+
+3. `注意`
+
+![](./images/Image3.png)
+
+如果出现这样的编译失败问题请进入终端，在 SealClass.xcodeproj 的同级目录下执行下面命令
+
+`git checkout -- SealClass.xcodeproj/project.pbxproj`
+
+问题的原因是不同版本的 pod 对 xcode 配置文件的处理是不一致的，会导致某些文件找不到，执行上面命令清空本地对 SealClass.xcodeproj/project.pbxproj 修改，避免冲突
 
 ## 代码目录介绍
 iOS 端整体目录结构主要由 Sections，Services，Util，Resources 四个部分组成。
