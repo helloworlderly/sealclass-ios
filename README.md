@@ -2,7 +2,7 @@
 本文档介绍了 SealClass 的 Demo 整体框架设计，以及核心流程，为开发者了解 Demo 的主要功能提供指导性说明。SealClass Demo 的 [体验和简介地址](https://www.rongcloud.cn/solution/edu#industry-points)。APPKey 的需要您到官网注册获取。同时需要您开通音视频服务。
 
 ## 代码目录介绍
-iOS端整体目录结构主要由 Sections，Services，Util，Resources 四个部分组成。
+iOS 端整体目录结构主要由 Sections，Services，Util，Resources 四个部分组成。
 
 ![](./images/Image1.png)
 
@@ -72,7 +72,7 @@ SealClass 的主体业务主要在 Sections 文件夹里。分为白板（WhiteB
 
 ## Service 部分介绍
 Service部分由 （音视频）RTCService，（IM）IMService，（课堂）ClaassroomService 三个部分组成。
-### RTCService说明
+### RTCService 说明
 ---
 对应于`RTCService` 文件。通过单例模式实现。
 
@@ -291,11 +291,11 @@ Service部分由 （音视频）RTCService，（IM）IMService，（课堂）Cla
 
 ```
 
-### IMService说明
+### IMService 说明
 ---
 对应于 `IMService` 文件。通过单例模式实现。主要用于课堂内收发消息，以及接收服务端下发的信令消息。
 
-### ClassroomService说明
+### ClassroomService 说明
 ---
 对应于 `ClassroomService ` 文件。通过单例模式实现。所有接口调用均通过代理形式返回结果，需要设置代理监听。
 
