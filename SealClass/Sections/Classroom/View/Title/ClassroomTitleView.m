@@ -104,23 +104,25 @@
 - (void)refreshTitleView {
     [self setDefaultButtons];
     RoomMember *curMember = [ClassroomService sharedService].currentRoom.currentMember;
-    BOOL cameraAvailable =  [self isCameraAvailable];
-    BOOL microphoneAvailable =  [self isMicrophoneAvailable];
     switch (curMember.role) {
         case RoleAssistant:
         case RoleTeacher:
-        case RoleStudent:
-            if (cameraAvailable) {
-                self.cameraBtn.selected = !curMember.cameraEnable;
-            }else {
-                self.cameraBtn.selected = YES;
-            }
-            if (microphoneAvailable) {
-                self.microphoneBtn.selected = !curMember.microphoneEnable;
-            }else {
-                self.microphoneBtn.selected = YES;
-            }
-            
+        case RoleStudent:{
+            [self isCameraAvailable:^(bool avilable) {
+                if (avilable) {
+                    self.cameraBtn.selected = !curMember.cameraEnable;
+                }else {
+                    self.cameraBtn.selected = YES;
+                }
+            }];
+            [self isMicrophoneAvailable:^(bool avilable) {
+                if (avilable) {
+                    self.microphoneBtn.selected = !curMember.microphoneEnable;
+                }else {
+                    self.microphoneBtn.selected = YES;
+                }
+            }];
+        }
             break;
         case RoleAudience:
             self.switchCameraBtn.enabled = NO;
@@ -148,21 +150,37 @@
 }
 
 - (void)tapEvent:(UIButton *)btn {
-    BOOL cameraAvailable =  [self isCameraAvailable];
-    BOOL microphoneAvailable =  [self isMicrophoneAvailable];
-    if (btn.tag == ClassroomTitleViewActionTagCamera &&!cameraAvailable) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"cameraAvailable", @"SealClass", nil) delegate:nil cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"SealClass", nil) otherButtonTitles:nil];
-        [alertView show];
-        return;
-    }
-    if (btn.tag == ClassroomTitleViewActionTagMicrophone &&!microphoneAvailable) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"microphoneAvailable", @"SealClass", nil) delegate:nil cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"SealClass", nil) otherButtonTitles:nil];
-        [alertView show];
-        return;
-    }
-    btn.selected = !btn.selected;
-    if(self.delegate && [self.delegate respondsToSelector:@selector(classroomTitleView:didTapAtTag:)]) {
-        [self.delegate classroomTitleView:btn didTapAtTag:btn.tag];
+    if (btn.tag == ClassroomTitleViewActionTagCamera) {
+        [self isCameraAvailable:^(bool avilable) {
+            if (!avilable) {
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"cameraAvailable", @"SealClass", nil) delegate:nil cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"SealClass", nil) otherButtonTitles:nil];
+                [alertView show];
+                return;
+            }else {
+                btn.selected = !btn.selected;
+                if(self.delegate && [self.delegate respondsToSelector:@selector(classroomTitleView:didTapAtTag:)]) {
+                    [self.delegate classroomTitleView:btn didTapAtTag:btn.tag];
+                }
+            }
+        }];
+    }else if (btn.tag == ClassroomTitleViewActionTagMicrophone ) {
+        [self isMicrophoneAvailable:^(bool avilable) {
+            if (!avilable) {
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"microphoneAvailable", @"SealClass", nil) delegate:nil cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"SealClass", nil) otherButtonTitles:nil];
+                [alertView show];
+                return;
+            }else {
+                btn.selected = !btn.selected;
+                if(self.delegate && [self.delegate respondsToSelector:@selector(classroomTitleView:didTapAtTag:)]) {
+                    [self.delegate classroomTitleView:btn didTapAtTag:btn.tag];
+                }
+            }
+        }];
+    }else {
+        btn.selected = !btn.selected;
+        if(self.delegate && [self.delegate respondsToSelector:@selector(classroomTitleView:didTapAtTag:)]) {
+            [self.delegate classroomTitleView:btn didTapAtTag:btn.tag];
+        }
     }
 }
 
@@ -181,34 +199,47 @@
     }
 }
 
-- (BOOL)isCameraAvailable{
-    __block BOOL canCamera = NO;
-    NSString *mediaType = AVMediaTypeVideo;
-    AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:mediaType];
-    if(authStatus == AVAuthorizationStatusRestricted || authStatus == AVAuthorizationStatusDenied){
-        canCamera = NO;
-    }else{
-        canCamera = YES;
+- (void)isCameraAvailable:(void (^)(bool avilable))successBlock {
+    NSString *mediaType = AVMediaTypeVideo;                                                         //读取媒体类型
+    AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:mediaType]; //读取设备授权状态
+    if (AVAuthorizationStatusAuthorized == authStatus) {
+        successBlock(YES);
+    } else if(authStatus == AVAuthorizationStatusNotDetermined) {
+        [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo
+                                 completionHandler:^(BOOL granted) {
+                                     dispatch_async(dispatch_get_main_queue(), ^{
+                                         if (granted) {
+                                             successBlock(YES);
+                                         } else {
+                                             successBlock(NO);
+                                         }
+                                     });
+                                 }];
+    }else {
+        successBlock(NO);
     }
-    return canCamera;
 }
 
--(BOOL)isMicrophoneAvailable
-{
-    __block BOOL canRecord = NO;
-    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-    if ([audioSession respondsToSelector:@selector(requestRecordPermission:)]) {
-        [audioSession performSelector:@selector(requestRecordPermission:) withObject:^(BOOL granted) {
-            if (granted) {
-                canRecord = YES;
-            }
-            else {
-                canRecord = NO;
-            }
+-(void)isMicrophoneAvailable:(void (^)(bool avilable))successBlock  {
+    AVAudioSessionRecordPermission authStatus = [[AVAudioSession sharedInstance] recordPermission];
+    if (AVAudioSessionRecordPermissionGranted == authStatus) {
+        successBlock(YES);
+    } else if(authStatus == AVAudioSessionRecordPermissionUndetermined){
+        [[AVAudioSession sharedInstance] requestRecordPermission:^(BOOL granted) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (granted) {
+                    successBlock(YES);
+                } else {
+                    successBlock(NO);
+                    
+                }
+            });
         }];
+    }else {
+        successBlock(NO);
     }
-    return canRecord;
 }
+
 
 - (NSString *)formatJoinTime {
     NSInteger durationInteger = self.duration ++;

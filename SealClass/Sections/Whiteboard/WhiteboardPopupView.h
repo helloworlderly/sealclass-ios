@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  点击选项回调 Block
 
@@ -15,8 +17,6 @@
  @param item 选项字段值
  */
 typedef void(^SelectItemBlock)(NSInteger index, NSString *item);
-
-NS_ASSUME_NONNULL_BEGIN
 
 @interface WhiteboardPopupView : UIView
 

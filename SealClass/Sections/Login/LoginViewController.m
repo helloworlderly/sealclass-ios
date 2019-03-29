@@ -27,7 +27,7 @@
 @property (nonatomic, strong) InputTextField *userNameTextField;
 @property (nonatomic, strong) SelectionButton *openVisitorButton;
 @property (nonatomic, strong) UIButton *joinClassButton;
-@property (nonatomic, strong) MBProgressHUD *hub;
+@property (nonatomic, strong) MBProgressHUD *hud;
 @end
 
 @implementation LoginViewController
@@ -50,19 +50,19 @@
 #pragma mark - ClassroomHelperDelegate
 - (void)classroomDidJoin:(Classroom *)classroom{
     if ([self.navigationController.topViewController isKindOfClass:[self class]]) {
-        [self.hub hideAnimated:YES];
+        [self.hud hideAnimated:YES];
         [self pushToClassroom];
     }
 }
 
 - (void)classroomDidJoinFail{
-    [self.hub hideAnimated:YES];
+    [self.hud hideAnimated:YES];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedStringFromTable(@"LoginFail", @"SealClass", nil) delegate:nil cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"SealClass", nil) otherButtonTitles:nil];
     [alertView show];
 }
 
 - (void)classroomDidOverMaxUserCount{
-    [self.hub hideAnimated:YES];
+    [self.hud hideAnimated:YES];
     [NormalAlertView showAlertWithTitle:NSLocalizedStringFromTable(@"OverMaxMessage", @"SealClass", nil) leftTitle:NSLocalizedStringFromTable(@"Cancel", @"SealClass", nil) rightTitle:NSLocalizedStringFromTable(@"OK", @"SealClass", nil) cancel:^{
 
     } confirm:^{
@@ -202,7 +202,7 @@
 }
 
 - (void)login:(BOOL)isAudience{
-    self.hub = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     NSString *roomId = [self.classIdTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     NSString *userName = [self.userNameTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     [[LoginHelper sharedInstance] login:roomId user:userName isAudience:isAudience];

@@ -52,13 +52,13 @@
     [self bindDelegates];
     [self publishStream];
     [self renderMainContainerView];
-    UITapGestureRecognizer *tapGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestrue:)];
+    UITapGestureRecognizer *tapGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture:)];
     [self.view addGestureRecognizer:tapGes];
     tapGes.delegate = self;
     [self showRoleHud];
 }
 
-- (void)tapGestrue: (UITapGestureRecognizer *)tapGesture{
+- (void)tapGesture: (UITapGestureRecognizer *)tapGesture{
     for (UIButton *button in self.toolPanelView.buttonArray) {
         if (button.tag == ToolPanelViewActionTagVideoList || button.tag == ToolPanelViewActionTagOnlinePerson || button.tag == ToolPanelViewActionTagClassNews || button.tag == ToolPanelViewActionTagRecentlyShared) {
             if (button.selected) {
