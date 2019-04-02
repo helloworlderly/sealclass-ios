@@ -386,11 +386,11 @@ Service 部分由 （音视频）RTCService，（IM）IMService，（课堂）Cl
 
 ```
 
-*  创建白板成功，啥啊暗处白板成功之后的回调，只有创建者能收到。
+*  创建白板成功，删除白板成功之后的回调，只有创建者能收到。
 
 ```
 - (void)whiteboardDidCreate:(Whiteboard *)board;
-- (void)whiteboardDidDelete:(Whiteboard *)boardId;
+- (void)whiteboardDidDelete:(Whiteboard *)board;
 
 ```
 
