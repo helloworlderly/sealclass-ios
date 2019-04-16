@@ -22,7 +22,7 @@ iOS 端整体目录结构主要由 Sections，Services，Util，Resources 四个
 
 ![](./images/Image1.png)
 
-* Section 由四部分组成，每个部分都包含了整个功能的全部实现。WhiteBoard 白板功能，Setting 设置功能， Classroom 课堂功能，Login 登录功能。
+* Section 由四部分组成，每个部分都包含了整个功能的全部实现。Whiteboard 白板功能，Setting 设置功能， Classroom 课堂功能，Login 登录功能。
 
 * Services 由三部分组成，IM 管理类，Classroom 管理类， RTC 管理类。
 
@@ -31,7 +31,7 @@ iOS 端整体目录结构主要由 Sections，Services，Util，Resources 四个
 * Resources 包含了国际化文件，图片资源，以及 Emoji 表情。
 
 ## 主体业务介绍
-SealClass 的主体业务主要在 Sections 文件夹里。分为白板（WhiteBoard），设置（Setting），课堂（Classroom）, 登录（Login）。每个模块按照具体的功能再次进一步划分。
+SealClass 的主体业务主要在 Sections 文件夹里。分为白板（Whiteboard），设置（Setting），课堂（Classroom）, 登录（Login）。每个模块按照具体的功能再次进一步划分。
 
 ### 登录
 ---
