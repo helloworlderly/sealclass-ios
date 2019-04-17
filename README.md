@@ -6,8 +6,11 @@
 1. [注册融云开发者](https://www.rongcloud.cn)，创建应用后获取 APPKey。
 
 2. 开通音视频服务。[查看音视频计费明细](https://www.rongcloud.cn/docs/call.html#billing)
+3. 必须自行部署 [SealClass-Server](https://github.com/rongcloud/sealclass-server)
 
-3. `注意`
+	保证自行部署的服务和端上 AppKey 匹配
+
+4. `注意`
 
 ![](./images/Image3.png)
 
