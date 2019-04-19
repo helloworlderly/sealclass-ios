@@ -6,11 +6,8 @@
 1. [注册融云开发者](https://www.rongcloud.cn)，创建应用后获取 APPKey。
 
 2. 开通音视频服务。[查看音视频计费明细](https://www.rongcloud.cn/docs/call.html#billing)
-3. 必须自行部署 [SealClass-Server](https://github.com/rongcloud/sealclass-server)
 
-	保证自行部署的服务和端上 AppKey 匹配
-
-4. `注意`
+3. `注意`
 
 ![](./images/Image3.png)
 
@@ -25,7 +22,7 @@ iOS 端整体目录结构主要由 Sections，Services，Util，Resources 四个
 
 ![](./images/Image1.png)
 
-* Section 由四部分组成，每个部分都包含了整个功能的全部实现。Whiteboard 白板功能，Setting 设置功能， Classroom 课堂功能，Login 登录功能。
+* Section 由四部分组成，每个部分都包含了整个功能的全部实现。WhiteBoard 白板功能，Setting 设置功能， Classroom 课堂功能，Login 登录功能。
 
 * Services 由三部分组成，IM 管理类，Classroom 管理类， RTC 管理类。
 
@@ -34,7 +31,7 @@ iOS 端整体目录结构主要由 Sections，Services，Util，Resources 四个
 * Resources 包含了国际化文件，图片资源，以及 Emoji 表情。
 
 ## 主体业务介绍
-SealClass 的主体业务主要在 Sections 文件夹里。分为白板（Whiteboard），设置（Setting），课堂（Classroom）, 登录（Login）。每个模块按照具体的功能再次进一步划分。
+SealClass 的主体业务主要在 Sections 文件夹里。分为白板（WhiteBoard），设置（Setting），课堂（Classroom）, 登录（Login）。每个模块按照具体的功能再次进一步划分。
 
 ### 登录
 ---
@@ -389,11 +386,11 @@ Service 部分由 （音视频）RTCService，（IM）IMService，（课堂）Cl
 
 ```
 
-*  创建白板成功，删除白板成功之后的回调，只有创建者能收到。
+*  创建白板成功，啥啊暗处白板成功之后的回调，只有创建者能收到。
 
 ```
 - (void)whiteboardDidCreate:(Whiteboard *)board;
-- (void)whiteboardDidDelete:(Whiteboard *)board;
+- (void)whiteboardDidDelete:(Whiteboard *)boardId;
 
 ```
 
@@ -438,3 +435,35 @@ Service 部分由 （音视频）RTCService，（IM）IMService，（课堂）Cl
 - (void)errorDidOccur:(ErrorCode)code;
 
 ```
+ErrorCode 错误码详情：
+
+6. 错误码表
+
+   | errCode |        描述        |
+   | :-----: | :----------------: |
+   |    0    |       成功        |
+   |    1    |      参数错误      |
+   |    2    |  Auth 过期或错误   |
+   |    3    |      无权限       |
+   |    4    |     错误的请求     |
+   |   255   |      其他错误      |
+   |   10    |   IM Token 错误    |
+   |   11    |   Room 创建失败    |
+   |   12    |   加入 Room 失败   |
+   |   13    |  IM信令消息发送失败 |
+   |   20    |    Room 不存在     |
+   |   21    |  用户不在 Room 内  |
+   |   22    |  退出 Room 失败   |
+   |   23    |  老师不在 Room 内  |
+   |   24    |  助教不在 Room 内  |
+   |   25    |    白板创建失败    |
+   |   26    |     白板不存在     |
+   |   27    |     删除白板失败    |
+   |   28    |     用户已加入房间   |
+   |   29    |     不能修改自己角色  |
+   |   30    |     令牌无效      |
+   |   31    |     超过最大人数    |
+   |   32    |     老师已存在     |
+   |   33    |      降级失败      |
+   |   34    |  设置讲师角色失败  |
+   |   99    |   http 请求失败  |

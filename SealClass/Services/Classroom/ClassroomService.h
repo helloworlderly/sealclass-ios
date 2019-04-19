@@ -52,7 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)ticketDidExpire:(NSString *)ticket;
 //只有创建者才能收到
 - (void)whiteboardDidCreate:(Whiteboard *)board;
-- (void)whiteboardDidDelete:(Whiteboard *)boardId;
+- (void)whiteboardDidDelete:(Whiteboard *)board;
 //显示白板的回调
 - (void)whiteboardDidDisplay:(NSString *)boardId;
 //显示老师的回调

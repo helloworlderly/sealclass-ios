@@ -260,6 +260,14 @@
         self.currentSection = sectionTag;
     }
     [self.personListTableView reloadData];
+    if (self.currentSection < 0) {
+        return;
+    }
+    CGRect sectionR = [self.personListTableView rectForSection:self.currentSection];
+    //判断当前操作工具栏是否被遮挡，如果被遮挡，需要调整contentOffset,使其显示出来
+    if(CGRectGetMaxY(sectionR) - point.y > UIScreenHeight){
+        point.y += CGRectGetMaxY(sectionR) - point.y - UIScreenHeight;
+    }
     [self.personListTableView setContentOffset:point animated:NO];
 }
 

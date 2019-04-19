@@ -55,11 +55,9 @@
 - (void)tapEvent:(UIButton *)btn {
     for (UIButton *button in self.buttonArray) {
         if (button.tag != btn.tag) {
-            if (button.tag == ToolPanelViewActionTagClassNews && button.selected) {
-                [self clearUnreadMessage];
-            }
             button.selected = NO;
-        }else{
+        }
+        if (btn.tag == ToolPanelViewActionTagClassNews) {
             [self clearUnreadMessage];
         }
     }

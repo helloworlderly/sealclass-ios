@@ -81,17 +81,23 @@
     RongRTCVideoCaptureParam *param = [RTCService sharedInstance].captureParam;
     NSString *videoSizeText = @"640x480";
     switch (param.videoSizePreset) {
-        case RongRTCVideoSizePreset192x144:
-            videoSizeText = @"192x144";
+        case RongRTCVideoSizePreset256x144:
+            videoSizeText = @"256x144";
             break;
-        case RongRTCVideoSizePreset352x288:
-            videoSizeText = @"352x288";
+        case RongRTCVideoSizePreset320x240:
+            videoSizeText = @"320x240";
             break;
         case RongRTCVideoSizePreset480x360:
             videoSizeText = @"480x360";
             break;
+        case RongRTCVideoSizePreset640x360:
+            videoSizeText = @"640x360";
+            break;
         case RongRTCVideoSizePreset640x480:
             videoSizeText = @"640x480";
+            break;
+        case RongRTCVideoSizePreset720x480:
+            videoSizeText = @"720x480";
             break;
         case RongRTCVideoSizePreset1280x720:
             videoSizeText = @"1280x720";

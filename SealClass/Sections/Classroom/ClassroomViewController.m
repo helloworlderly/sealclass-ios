@@ -110,7 +110,7 @@
         displayUserId = [ClassroomService sharedService].currentRoom.teacher.userId;
     }
     for (RongRTCAVInputStream *stream in streams) {
-        if (stream.userId == displayUserId) {
+        if ([stream.userId isEqualToString:displayUserId]) {
             [self renderMainContainerView];
         }
         [self.videoListView updateUserVideo:stream.userId];
@@ -126,6 +126,7 @@
 
 #pragma mark - ClassroomTitleViewDelegate
 - (void)classroomTitleView:(UIButton *)button didTapAtTag:(ClassroomTitleViewActionTag)tag {
+    [self.chatAreaView.inputBarControl setInputBarStatus:InputBarControlStatusDefault];
     switch (tag) {
         case ClassroomTitleViewActionTagSwitchCamera:
             [[RTCService sharedInstance] switchCamera];
@@ -174,7 +175,7 @@
         case ToolPanelViewActionTagWhiteboard:
             if (button.selected) {
                 button.selected = !button.selected;
-                WhiteboardPopupView *popupView = [[WhiteboardPopupView alloc] initWithFrame:CGRectMake(ToolPanelViewWidth+6, 50+25, 97, 44) shapePointY:44/2 items:@[@"新建白板"] didSelectItem:^(NSInteger index, NSString *item) {
+                WhiteboardPopupView *popupView = [[WhiteboardPopupView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.toolPanelView.frame)+6, 50+25, 97, 44) shapePointY:44/2 items:@[@"新建白板"] didSelectItem:^(NSInteger index, NSString *item) {
                     switch (index) {
                         case 0:
                             [[ClassroomService sharedService] createWhiteboard];
@@ -517,7 +518,7 @@
             }
         }
     }
-    if ([ClassroomService sharedService].currentRoom.currentDisplayType != DisplayWhiteboard) {
+    if ([ClassroomService sharedService].currentRoom.currentDisplayType != DisplayWhiteboard && type == DeviceTypeCamera) {
         [self renderMainContainerView];
     }
     [self.titleView refreshTitleView];
@@ -569,8 +570,8 @@
     [self renderMainContainerView];
 }
 
-- (void)whiteboardDidDelete:(NSString *)boardId {
-    NSLog(@"whiteboardDidDelete %@ ",boardId);
+- (void)whiteboardDidDelete:(Whiteboard *)board {
+    NSLog(@"whiteboardDidDelete %@ ", board);
     [self.recentSharedView reloadDataSource];
 }
 

@@ -20,7 +20,7 @@
     self.title = NSLocalizedStringFromTable(@"Resolution", @"SealClass", nil);
     self.tableView.tableFooterView = [UIView new];
     self.tableView.backgroundColor = HEXCOLOR(0xf2f2f3);
-    self.resolutionArray = @[@"192x144",@"352x288",@"480x360",@"640x480",@"1280x720"];
+    self.resolutionArray = @[@"256x144",@"320x240",@"480x360",@"640x360",@"640x480",@"720x480",@"1280x720"];
 }
 
 -(void)viewWillAppear:(BOOL)animated{

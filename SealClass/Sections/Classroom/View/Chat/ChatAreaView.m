@@ -8,7 +8,6 @@
 
 #import "ChatAreaView.h"
 #import <RongIMLib/RongIMLib.h>
-#import "InputBarControl.h"
 #import "MessageDataSource.h"
 #import "MessageBaseCell.h"
 #import "MessageCell.h"
@@ -25,7 +24,6 @@
 @property (nonatomic, assign) RCConversationType conversationType;
 @property (nonatomic, copy)   NSString *targetId;
 @property (nonatomic, strong) UITableView *messageListView;
-@property (nonatomic, strong) InputBarControl *inputBarControl;
 @property (nonatomic, strong) MessageDataSource *dataSource;
 @property (nonatomic, assign) BOOL isLoadingHistoryMessage; ///是否正在加载历史消息
 @end

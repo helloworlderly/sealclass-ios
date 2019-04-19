@@ -15,6 +15,7 @@ BUILD_APP_PROFILE=""
 BIN_DIR="bin"
 VER_FLAG=${Version}
 CUR_TIME=$(date +%Y%m%d%H%M)
+DEMO_SERVER=${Demo_Server}
 
 #清空上次的临时编译，参数为目标目录
 function clean_last_build(){
@@ -60,6 +61,11 @@ git checkout -- SealClass.xcodeproj/project.pbxproj
 sed -i "" -e '/CFBundleShortVersionString/{n;s/[0-9]\.[0-9]\{1,2\}\.[0-9]\{1,2\}/'"$VER_FLAG"'/; }' ./SealClass/Info.plist
 sed -i "" -e '/CFBundleVersion/{n;s/[0-9]*[0-9]/'"$CUR_TIME"'/; }' ./SealClass/Info.plist
 
+if [ -n "${DEMO_SERVER}" ];then
+  sed -i "" -e '11s?^.*$?NSString \*const BASE_URL = @\"'${DEMO_SERVER}'\";?' ./SealClass/Util/HTTP/HTTPUtility.m
+fi
+
+
 PROJECT_NAME="SealClass.xcworkspace"
 targetName="SealClass"
 TARGET_DECIVE="iphoneos"
@@ -81,3 +87,22 @@ cp -af ${BIN_DIR}/*.app.dSYM ${OUTPUT_PATH}/
 zip -r $OUTPUT_PATH/SealClass_v${VER_FLAG}_${BUILD_NUMBER}_${CUR_TIME}.app.dSYM.zip $OUTPUT_PATH/*.app.dSYM
 rm -rf $OUTPUT_PATH/*.app.dSYM
 
+function archive_sourcecode() {
+  Source_Name="SealClass_iOS"
+  mkdir $Source_Name
+  cp -af ./archive.plist $Source_Name
+  cp -af ./build.sh $Source_Name
+  cp -af ./clear_env.py $Source_Name
+  cp -af ./LICENSE $Source_Name
+  cp -af ./Podfile $Source_Name
+  cp -af ./README.md $Source_Name
+  cp -af ./SealClass $Source_Name
+  cp -af ./SealClass.xcodeproj $Source_Name
+  cp -af ./.gitignore $Source_Name
+  cp -af ./images $Source_Name
+
+  zip -r $OUTPUT_PATH/${Source_Name}_Sourcecode_v${VER_FLAG}_${BUILD_NUMBER}_${CUR_TIME}.zip $Source_Name
+  rm -rf $Source_Name
+}
+
+archive_sourcecode

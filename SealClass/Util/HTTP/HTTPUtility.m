@@ -8,7 +8,7 @@
 
 #import "HTTPUtility.h"
 #import <AFNetworking/AFNetworking.h>
-NSString *const BASE_URL = @"Your Server Url";
+NSString *const BASE_URL = @"https://120.92.35.176/sealclass/api/v1/";
 
 static AFHTTPSessionManager *manager;
 
