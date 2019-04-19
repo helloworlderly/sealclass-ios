@@ -7,7 +7,15 @@
 
 2. 开通音视频服务。[查看音视频计费明细](https://www.rongcloud.cn/docs/call.html#billing)
 
-3. `注意`
+3. 必须自行部署 [SealClass-Server](https://github.com/rongcloud/sealclass-server)
+
+	保证自行部署的服务和端上 AppKey 匹配
+	
+4. 服务部署完毕之后，请分别修改源码 `APPKey`,`BuglyKey`,`BASE_URL` 为您自己的
+
+	参见源码中 `AppDelegate.m`,`HTTPUtility.m`，其中 `APPKey 和 BASE_URL 为必填项`
+
+5. `注意`
 
 ![](./images/Image3.png)
 

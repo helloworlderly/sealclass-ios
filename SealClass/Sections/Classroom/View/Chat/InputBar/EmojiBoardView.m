@@ -176,13 +176,13 @@ static NSString * const emojiCollectionViewCellIdentify = @"emojiCollectionViewC
 - (void)initializedSubViews {
     self.backgroundColor = HEXCOLOR(0xffffff);
     [self addSubview:self.emojiContentView];
-    [_emojiContentView setFrame:CGRectMake(0, 0, self.bounds.size.width, 170)];
+    [_emojiContentView setFrame:CGRectMake(0, 0, self.bounds.size.width, 150)];
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     layout.itemSize = CGSizeMake(32, 32);
     layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     //计算每个分区的左右边距
     float distanceX = (self.bounds.size.width - 8*32)/9;
-    float distanceY = (170 - 3*32)/4;
+    float distanceY = (150 - 3*32)/4;
     //设置分区的内容偏移
     layout.sectionInset = UIEdgeInsetsMake(distanceY, distanceX, distanceY, distanceX);
     //设置行列间距
@@ -195,11 +195,11 @@ static NSString * const emojiCollectionViewCellIdentify = @"emojiCollectionViewC
     _pageControl.backgroundColor = HEXCOLOR(0xfafafa);
     _pageControl.currentPageIndicatorTintColor = HEXCOLOR(0x868686);
     _pageControl.pageIndicatorTintColor = HEXCOLOR(0xBFBFBF);
-    [_pageControl setFrame:CGRectMake(0, 170, self.bounds.size.width, 10)];
+    [_pageControl setFrame:CGRectMake(0, 150, self.bounds.size.width, 10)];
     [_pageControl setNumberOfPages:(self.pages ? self.pages : (_emojiArray.count/23) + (_emojiArray.count%23 == 0 ? 0:1))];
      
     [self addSubview:self.bottomContentView];
-    [_bottomContentView setFrame:CGRectMake(0, 180, self.bounds.size.width, 40)];
+    [_bottomContentView setFrame:CGRectMake(0, 160, self.bounds.size.width, 40)];
     
     [_bottomContentView addSubview:self.emojiBtn];
     [_emojiBtn setFrame:CGRectMake(0, 0, 40+[self getIphoneXFitSpace], 40)];

@@ -76,6 +76,13 @@
     }
 }
 
+- (void)didTapTextView{
+    self.emojiButton.selected = NO;
+    [self.inputTextView setInputView:nil];
+    [self.inputTextView reloadInputViews];
+    [self.inputTextView becomeFirstResponder];
+}
+
 - (void)didTouchEmojiDown:(UIButton *)sender {
     [_emojiButton setSelected:!sender.selected];
     [self.delegate didTouchEmojiButton:sender];
@@ -115,6 +122,9 @@
         [_inputTextView.layer setBorderColor:HEXCOLOR(0xb2b2b2).CGColor];
         [_inputTextView.layoutManager setAllowsNonContiguousLayout:YES];    //默认从顶部开始显示
         [_inputTextView setDelegate:self];
+        UITapGestureRecognizer *tapGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapTextView)];
+        [_inputTextView addGestureRecognizer:tapGes];
+
     }
     return _inputTextView;
 }

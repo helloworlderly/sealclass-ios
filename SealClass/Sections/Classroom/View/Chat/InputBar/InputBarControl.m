@@ -10,7 +10,7 @@
 #import "InputView.h"
 #import "EmojiBoardView.h"
 
-#define HeightEmojBoardView 220.0f
+#define HeightEmojBoardView 200.0f
 
 @interface InputBarControl ()<InputViewDelegate, EmojiViewDelegate>
 

@@ -62,7 +62,7 @@ sed -i "" -e '/CFBundleShortVersionString/{n;s/[0-9]\.[0-9]\{1,2\}\.[0-9]\{1,2\}
 sed -i "" -e '/CFBundleVersion/{n;s/[0-9]*[0-9]/'"$CUR_TIME"'/; }' ./SealClass/Info.plist
 
 if [ -n "${DEMO_SERVER}" ];then
-  sed -i "" -e '11s?^.*$?NSString \*const BASE_URL = @\"'${DEMO_SERVER}'\";?' ./SealClass/Util/HTTP/HTTPUtility.m
+  sed -i "" -e 's?^NSString \*const.*$?NSString \*const BASE_URL = @\"'${DEMO_SERVER}'\";?' ./SealClass/Util/HTTP/HTTPUtility.m
 fi
 
 
@@ -84,8 +84,10 @@ cp -af ${BIN_DIR}/*.ipa ${OUTPUT_PATH}/
 
 cp -af ${BIN_DIR}/*.app.dSYM ${OUTPUT_PATH}/
 
+cd $OUTPUT_PATH
 zip -r $OUTPUT_PATH/SealClass_v${VER_FLAG}_${BUILD_NUMBER}_${CUR_TIME}.app.dSYM.zip $OUTPUT_PATH/*.app.dSYM
 rm -rf $OUTPUT_PATH/*.app.dSYM
+cd ${BUILD_PATH}
 
 function archive_sourcecode() {
   Source_Name="SealClass_iOS"

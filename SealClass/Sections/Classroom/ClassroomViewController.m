@@ -56,6 +56,7 @@
     [self.view addGestureRecognizer:tapGes];
     tapGes.delegate = self;
     [self showRoleHud];
+    [[RTCService sharedInstance] useSpeaker:YES];
 }
 
 - (void)tapGesture: (UITapGestureRecognizer *)tapGesture{
@@ -292,7 +293,9 @@
 
 - (void)memberDidJoin:(RoomMember *)member {
     NSLog(@"memberDidJoin %@",member);
-    [self.videoListView reloadVideoList];
+    if(member.role != RoleAudience) {
+        [self.videoListView reloadVideoList];
+    }
     [self.personListView reloadPersonList];
     if (member.role == RoleTeacher || member.role == RoleAssistant) {
         [self.recentSharedView reloadDataSource];
@@ -301,7 +304,9 @@
 
 - (void)memberDidLeave:(RoomMember *)member {
     NSLog(@"memberDidLeave %@",member);
-    [self.videoListView reloadVideoList];
+    if(member.role != RoleAudience) {    
+        [self.videoListView reloadVideoList];
+    }
     [self.personListView reloadPersonList:member tag:RefreshPersonListTagRemove];
     if (member.role == RoleTeacher || member.role == RoleAssistant) {
         [self.recentSharedView reloadDataSource];
@@ -357,7 +362,6 @@
             //申请发言和邀请升级都会走.转让助教，老助教变成学员不走这里
             if ([curMember.userId isEqualToString:member.userId]) {
                 [self.view showHUDMessage:NSLocalizedStringFromTable(@"YouStudent", @"SealClass", nil)];
-                [[RTCService sharedInstance] useSpeaker:YES];
                 [[RTCService sharedInstance] setCameraDisable:NO];
                 [[RTCService sharedInstance] setMicrophoneDisable:NO];
                 [[RTCService sharedInstance] publishLocalUserDefaultAVStream];
@@ -375,7 +379,6 @@
                     [self.titleView refreshTitleView];
                     [self hideRecentSharedView];
                     [self.view showHUDMessage:NSLocalizedStringFromTable(@"YouDowngraded", @"SealClass", nil)];
-                    [[RTCService sharedInstance] useSpeaker:NO];
                     [[RTCService sharedInstance] setCameraDisable:YES];
                     [[RTCService sharedInstance] setMicrophoneDisable:YES];
                     [[RTCService sharedInstance] unpublishLocalUserDefaultAVStream];
@@ -430,7 +433,6 @@
 //旁观者申请成为学员，助教接受的回调
 - (void)applyDidApprove {
     NSLog(@"applyDidApprove %@",[ClassroomService sharedService].currentRoom.currentMember);
-    [[RTCService sharedInstance] useSpeaker:YES];
     [[RTCService sharedInstance] setCameraDisable:NO];
     [[RTCService sharedInstance] setMicrophoneDisable:NO];
     [[RTCService sharedInstance] publishLocalUserDefaultAVStream];
@@ -677,8 +679,8 @@
 
 - (void)refreshWboardFrame {
     CGRect rect;
-    CGRect mianContainRect = [self mainContainerFrame];
-    CGFloat originX = (mianContainRect.size.width-RecentSharedViewWidth-750/2)/2+CGRectGetMaxX(self.toolPanelView.frame);
+    CGRect mainContainRect = [self mainContainerFrame];
+    CGFloat originX = (mainContainRect.size.width-RecentSharedViewWidth-750/2)/2+CGRectGetMaxX(self.toolPanelView.frame);
     CGFloat originY = (UIScreenHeight-TitleViewHeight-563/2)/2+TitleViewHeight;
     if (self.recentSharedView.superview) {
         rect = CGRectMake(originX+90, originY, 750/2, 563/2);
