@@ -34,6 +34,8 @@ typedef NS_ENUM(NSUInteger, DisplayType) {
 //currentDisplayType 是 DisplayWhiteboard 时，currentDisplayURI 为白板 id；
 //其它 type 时，currentDisplayURI 为对应的 userId
 @property (nonatomic, copy)   NSString *currentDisplayURI;
+//当前用户手动选择在共享画布区显示的视频用户 id
+@property (nonatomic, copy) NSString *currentMaskUserId;
 
 + (instancetype)classroomFromJson:(NSDictionary *)dic;
 

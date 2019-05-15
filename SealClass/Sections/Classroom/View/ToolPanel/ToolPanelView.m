@@ -10,9 +10,7 @@
 #import "ClassroomService.h"
 #import <RongIMLib/RongIMLib.h>
 #define LLeftButtonCount     5
-#define LLeftButtonWidht     24
-#define LLeftButtonMargin    24
-#define LLeftToolViewHight   (5 * 24 + 7 * 24)
+#define LLeftButtonMargin    (self.bounds.size.height - LLeftToolViewTop*2-LLeftButtonWidht*5)/4
 
 @interface ToolPanelView ()
 
@@ -52,21 +50,22 @@
     [self addSubview:self.toolView];
     [self addButtonsIn:self.toolView];
 }
+
 - (void)tapEvent:(UIButton *)btn {
     for (UIButton *button in self.buttonArray) {
         if (button.tag != btn.tag) {
             button.selected = NO;
         }
-        if (btn.tag == ToolPanelViewActionTagClassNews) {
-            [self clearUnreadMessage];
-        }
+    }
+    if (btn.tag == ToolPanelViewActionTagClassNews) {
+        [self clearUnreadMessage];
     }
     btn.selected = !btn.selected;
+    [self setVedioStatus];
     if(self.delegate && [self.delegate respondsToSelector:@selector(toolPanelView:didTapAtTag:)]) {
         [self.delegate toolPanelView:btn didTapAtTag:btn.tag];
     }
 }
-
 - (void)updateClassNewsButton{
     Classroom *currentRoom = [ClassroomService sharedService].currentRoom;
     int unreadCount = [[RCIMClient sharedRCIMClient] getUnreadCount:ConversationType_GROUP targetId:currentRoom.roomId];
@@ -92,12 +91,12 @@
     self.buttonArray = [[NSMutableArray alloc] init];
     CGFloat buttonX = (self.bounds.size.width - LLeftButtonWidht ) / 2.0;
     self.buttonImageArray = @[@"whiteboard", @"recentlyshared", @"onlineperson", @"videolist", @"classnews"];
-    self.buttonSelectedImageArray = @[@"whiteboard_disable", @"recentlyshared_open", @"onlineperson_open", @"videolist_open", @"classnews_open"];
+    self.buttonSelectedImageArray = @[@"whiteboard_selected", @"recentlyshared_open", @"onlineperson_open", @"videolist_open", @"classnews_open"];
     self.buttonOpenHighlightedImageArray = @[@"whiteboard_selected", @"recentlyshared_open_selected", @"onlineperson_open_selected", @"videolist_open_selected", @"classnews_open_selected"];
     self.buttonHighlightedImageArray = @[@"whiteboard_selected", @"recentlyshared_selected", @"onlineperson_selected", @"videolist_selected", @"classnews_selected"];
     
     for(int i = 0; i < LLeftButtonCount; i++) {
-        UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(buttonX, LLeftButtonMargin + i * (LLeftButtonWidht + LLeftButtonMargin), LLeftButtonWidht, LLeftButtonWidht)];
+        UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(buttonX, LLeftToolViewTop + i * (LLeftButtonWidht + LLeftButtonMargin), LLeftButtonWidht, LLeftButtonWidht)];
         button.tag = i;
         [button setBackgroundImage:[UIImage imageNamed:[self.buttonImageArray objectAtIndex:i]] forState:UIControlStateNormal];
         [button setBackgroundImage:[UIImage imageNamed:[self.buttonSelectedImageArray objectAtIndex:i]]  forState:UIControlStateSelected];
@@ -107,6 +106,9 @@
         [toolView addSubview:button];
         [self.buttonArray addObject:button];
         [self setButtonImage];
+        if (button.tag == ToolPanelViewActionTagVideoList) {
+            button.selected = YES;
+        }
     }
     
 }
@@ -138,10 +140,31 @@
     [self setButtonImage];
 }
 
+- (void)setVedioStatus{
+    BOOL isSelectVideo = YES;
+    for (UIButton * button in self.buttonArray) {
+        if(button.selected && button.tag != ToolPanelViewActionTagVideoList){
+            isSelectVideo = NO;
+        }
+    }
+    UIButton *videoListButton = (UIButton *)[self viewWithTag:ToolPanelViewActionTagVideoList];
+    videoListButton.selected = isSelectVideo;
+}
+
+- (void)foldToolPanelView{
+    for (UIButton * button in self.buttonArray) {
+        if(button.tag == ToolPanelViewActionTagRecentlyShared || button.tag == ToolPanelViewActionTagOnlinePerson || button.tag == ToolPanelViewActionTagWhiteboard){
+            if (button.selected) {
+                button.selected = NO;
+            }
+        }
+    }
+    [self setVedioStatus];
+}
+
 - (UIView *)toolView {
     if(!_toolView) {
-        CGSize size = self.bounds.size;
-        _toolView = [[UIView alloc] initWithFrame:CGRectMake(0, (size.height - LLeftToolViewHight) / 2, size.width, LLeftToolViewHight)];
+        _toolView = [[UIView alloc] initWithFrame:self.bounds];
     }
     return _toolView;
 }

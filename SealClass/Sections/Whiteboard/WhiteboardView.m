@@ -9,10 +9,11 @@
 #import "WhiteboardView.h"
 #import <WebKit/WebKit.h>
 #import <Masonry/Masonry.h>
+#import "ZoomControl.h"
 
-@interface WhiteboardView()<WKUIDelegate, WKNavigationDelegate>
+@interface WhiteboardView()<WKUIDelegate, WKNavigationDelegate,ZoomControlDelegate>
 @property (nonatomic, strong) WKWebView *webView;
-@property (nonatomic, strong) UIButton *fullScreenBtn;
+@property (nonatomic, strong) ZoomControl *zoomControl;
 @property (nonatomic, assign) BOOL isFullScreenMode;
 @property (nonatomic, weak) id<WhiteboardViewDelegate> delegate;
 @property (nonatomic, strong) UIActivityIndicatorView *indicatorView;
@@ -24,10 +25,11 @@
 - (instancetype)initWithDelegate:(id<WhiteboardViewDelegate>)delegate {
     self = [super initWithFrame:CGRectZero];
     if (self) {
+        self.delegate = delegate;
         self.backgroundColor = [UIColor blackColor];
         [self addSubview:self.webView];
         [self addSubview:self.backView];
-        [self addSubview:self.fullScreenBtn];
+        [self addSubview:self.zoomControl];
         [self addSubview:self.indicatorView];
         
         [self.webView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -36,10 +38,10 @@
         [self.backView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.mas_equalTo(self);
         }];
-        [self.fullScreenBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(self).mas_offset(10);
-            make.right.mas_equalTo(self).mas_offset(-10);
-            make.width.height.mas_equalTo(20);
+        [self.zoomControl mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.mas_equalTo(self);
+            make.right.mas_equalTo(self);
+            make.width.height.mas_equalTo(100);
         }];
         [self.indicatorView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.width.height.mas_equalTo(40);
@@ -53,6 +55,7 @@
     self.backView.hidden = NO;
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     [self.webView loadRequest:request];
+    [self.zoomControl resetDefaultScale];
 }
 
 - (void)destroy {
@@ -71,6 +74,37 @@
     _currentFrame = currentFrame;
     if (!self.isFullScreenMode) {
         self.frame = currentFrame;
+    }
+}
+
+#pragma mark - ZoomControlDelegate
+- (void)zoomControlDelegate:(CGFloat)scale{
+    self.clipsToBounds = YES;
+    CGSize baseSize = self.frame.size;
+    baseSize.height *= scale;
+    baseSize.width *= scale;
+    CGPoint center = self.webView.center;
+    CGRect frame = self.frame;
+    frame.size = baseSize;
+    self.webView.frame = frame;
+    self.webView.center = center;
+    if (self.delegate && [self.delegate respondsToSelector:@selector(whiteboardViewDidChangeZoomScale:)]) {
+        [self.delegate whiteboardViewDidChangeZoomScale:scale];
+    }
+}
+
+- (void)fullScreenDidUpdate:(BOOL)isFull{
+    self.isFullScreenMode = isFull;
+    UIView *superView = self.superview;
+    if (self.isFullScreenMode) {
+        [superView bringSubviewToFront:self];
+        [UIView animateWithDuration:0.3 animations:^{
+            self.frame = CGRectMake(0, 0, UIScreenWidth, UIScreenHeight);
+        }];
+    }else{
+        [UIView animateWithDuration:0.3 animations:^{
+            self.frame = self.currentFrame;
+        }];
     }
 }
 
@@ -97,27 +131,6 @@
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.25 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         self.backView.hidden = YES;
     });
-}
-
-#pragma mark - Target action
-
-- (void)fullScreenAction {
-    self.isFullScreenMode = !self.isFullScreenMode;
-    UIView *superView = self.superview;
-    if (self.isFullScreenMode) {
-        [_fullScreenBtn setImage:[UIImage imageNamed:@"quit_fullScreen"] forState:UIControlStateNormal];
-        [_fullScreenBtn setImage:[UIImage imageNamed:@"quit_fullScreen_hover"] forState:UIControlStateSelected];
-        [superView bringSubviewToFront:self];
-        [UIView animateWithDuration:0.3 animations:^{
-            self.frame = CGRectMake(0, 0, UIScreenWidth, UIScreenHeight);
-        }];
-    }else{
-        [_fullScreenBtn setImage:[UIImage imageNamed:@"fullScreen"] forState:UIControlStateNormal];
-        [_fullScreenBtn setImage:[UIImage imageNamed:@"fullScreen_hover"] forState:UIControlStateSelected];
-        [UIView animateWithDuration:0.3 animations:^{
-            self.frame = self.currentFrame;
-        }];
-    }
 }
 
 - (void)showIndicatorView:(BOOL)show{
@@ -166,15 +179,12 @@
     return _backView;
 }
 
-- (UIButton *)fullScreenBtn {
-    if (!_fullScreenBtn) {
-        _fullScreenBtn = [[UIButton alloc] initWithFrame:CGRectZero];
-        _fullScreenBtn.backgroundColor = [UIColor clearColor];
-        [_fullScreenBtn setImage:[UIImage imageNamed:@"fullScreen"] forState:UIControlStateNormal];
-        [_fullScreenBtn setImage:[UIImage imageNamed:@"fullScreen_hover"] forState:UIControlStateSelected];
-        [_fullScreenBtn addTarget:self action:@selector(fullScreenAction) forControlEvents:UIControlEventTouchUpInside];
+- (ZoomControl *)zoomControl{
+    if (!_zoomControl) {
+        _zoomControl = [[ZoomControl alloc] init];
+        _zoomControl.delegate = self;
     }
-    return _fullScreenBtn;
+    return _zoomControl;
 }
 
 - (UIActivityIndicatorView *)indicatorView{

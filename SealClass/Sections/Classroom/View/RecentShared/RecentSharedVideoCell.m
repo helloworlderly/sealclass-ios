@@ -33,9 +33,9 @@
 - (void)addSubViews {
     [self.contentView addSubview:self.thumnailImageView];
     [self.thumnailImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.contentView.mas_top).offset(11);
-        make.left.equalTo(self.contentView.mas_left).offset(11);
-        make.right.equalTo(self.contentView.mas_right).offset(-11);
+        make.top.equalTo(self.contentView.mas_top).offset(30);
+        make.left.equalTo(self.contentView.mas_left).offset(30);
+        make.right.equalTo(self.contentView.mas_right).offset(-30);
         make.bottom.equalTo(self.contentView.mas_bottom).offset(0);
     }];
 }

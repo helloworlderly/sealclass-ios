@@ -125,6 +125,13 @@
     return cell;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    RoomMember *mem = [self.videoDataSource objectAtIndex:indexPath.row];
+    if([self.delegate respondsToSelector:@selector(videoListView:didTap:)]) {
+        [self.delegate videoListView:self didTap:mem];
+    }
+}
+
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (self.videoDataSource != nil) {
         return self.videoDataSource.count;

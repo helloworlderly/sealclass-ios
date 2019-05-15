@@ -13,9 +13,6 @@
 		1797A5B0223BA6E2001BC52E /* RolePortraitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1797A5AF223BA6E2001BC52E /* RolePortraitView.m */; };
 		17AB2100222CFE3D0043E43E /* InputTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 17AB20FC222CFE3C0043E43E /* InputTextField.m */; };
 		17AB2101222CFE3D0043E43E /* SelectionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 17AB20FD222CFE3C0043E43E /* SelectionButton.m */; };
-		17AB2104222D06F80043E43E /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17AB2103222D06F80043E43E /* SettingViewController.m */; };
-		17AB2107222D114F0043E43E /* SelectResolutionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17AB2106222D114F0043E43E /* SelectResolutionController.m */; };
-		17AB210C222D17B40043E43E /* SettingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 17AB210B222D17B40043E43E /* SettingTableViewCell.m */; };
 		17E58B2F22379E91005BEB09 /* LoginHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 17E58B2E22379E91005BEB09 /* LoginHelper.m */; };
 		1D344A14223767ED00A6E536 /* WhiteboardControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D344A13223767ED00A6E536 /* WhiteboardControl.m */; };
 		1D6DC62B223F836200FB4815 /* WhiteboardPopupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D6DC62A223F836200FB4815 /* WhiteboardPopupView.m */; };
@@ -28,6 +25,8 @@
 		2767DA1A2237A06E00161A1B /* WhiteboardMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 2767DA192237A06E00161A1B /* WhiteboardMessage.m */; };
 		2767DA1D2237A12500161A1B /* DeviceMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 2767DA1C2237A12500161A1B /* DeviceMessage.m */; };
 		2767DA202237A20E00161A1B /* DisplayCommandMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 2767DA1F2237A20E00161A1B /* DisplayCommandMessage.m */; };
+		27BA8FD42283DDC800DFA817 /* ZoomControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 27BA8FD22283DDC800DFA817 /* ZoomControl.m */; };
+		27BA8FD7228400C500DFA817 /* VideoMaskView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27BA8FD6228400C500DFA817 /* VideoMaskView.m */; };
 		27C83006222CC7DF0054262E /* UIColor+RCColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C83005222CC7DF0054262E /* UIColor+RCColor.m */; };
 		27DBEA13223A3A3800E1E654 /* RoleChangedMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 27DBEA12223A3A3800E1E654 /* RoleChangedMessage.m */; };
 		27DBEA18223A4A5900E1E654 /* AssistantTransferMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 27DBEA17223A4A5900E1E654 /* AssistantTransferMessage.m */; };
@@ -80,6 +79,8 @@
 		9CB85C4F223F48F30007230F /* EmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB85C32223F48F30007230F /* EmptyView.m */; };
 		9CB85C522240E2D10007230F /* InviteUpgradeMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB85C512240E2D10007230F /* InviteUpgradeMessage.m */; };
 		9CB85C552241213C0007230F /* ControlDeviceNotifyMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB85C542241213C0007230F /* ControlDeviceNotifyMessage.m */; };
+		A2C15F2C226D9DA50076394C /* SettingView.m in Sources */ = {isa = PBXBuildFile; fileRef = A2C15F2A226D9DA50076394C /* SettingView.m */; };
+		A2C15F30226D9DD20076394C /* SettingResolutionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A2C15F2E226D9DD20076394C /* SettingResolutionCell.m */; };
 		D52A017D2237851100B98EDF /* UIView+MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = D52A017C2237851100B98EDF /* UIView+MBProgressHUD.m */; };
 /* End PBXBuildFile section */
 
@@ -92,12 +93,6 @@
 		17AB20FD222CFE3C0043E43E /* SelectionButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectionButton.m; sourceTree = "<group>"; };
 		17AB20FE222CFE3D0043E43E /* SelectionButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectionButton.h; sourceTree = "<group>"; };
 		17AB20FF222CFE3D0043E43E /* InputTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputTextField.h; sourceTree = "<group>"; };
-		17AB2102222D06F80043E43E /* SettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
-		17AB2103222D06F80043E43E /* SettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
-		17AB2105222D114F0043E43E /* SelectResolutionController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SelectResolutionController.h; sourceTree = "<group>"; };
-		17AB2106222D114F0043E43E /* SelectResolutionController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SelectResolutionController.m; sourceTree = "<group>"; };
-		17AB210A222D17B40043E43E /* SettingTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingTableViewCell.h; sourceTree = "<group>"; };
-		17AB210B222D17B40043E43E /* SettingTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SettingTableViewCell.m; sourceTree = "<group>"; };
 		17E58B2D22379E91005BEB09 /* LoginHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginHelper.h; sourceTree = "<group>"; };
 		17E58B2E22379E91005BEB09 /* LoginHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginHelper.m; sourceTree = "<group>"; };
 		1D344A12223767ED00A6E536 /* WhiteboardControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WhiteboardControl.h; sourceTree = "<group>"; };
@@ -120,6 +115,10 @@
 		2767DA1E2237A20E00161A1B /* DisplayCommandMessage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DisplayCommandMessage.h; sourceTree = "<group>"; };
 		2767DA1F2237A20E00161A1B /* DisplayCommandMessage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DisplayCommandMessage.m; sourceTree = "<group>"; };
 		2778639222390A1000A185CE /* ErrorCode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ErrorCode.h; sourceTree = "<group>"; };
+		27BA8FD22283DDC800DFA817 /* ZoomControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZoomControl.m; sourceTree = "<group>"; };
+		27BA8FD32283DDC800DFA817 /* ZoomControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZoomControl.h; sourceTree = "<group>"; };
+		27BA8FD5228400C400DFA817 /* VideoMaskView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoMaskView.h; sourceTree = "<group>"; };
+		27BA8FD6228400C500DFA817 /* VideoMaskView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoMaskView.m; sourceTree = "<group>"; };
 		27C83004222CC7DF0054262E /* UIColor+RCColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+RCColor.h"; sourceTree = "<group>"; };
 		27C83005222CC7DF0054262E /* UIColor+RCColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+RCColor.m"; sourceTree = "<group>"; };
 		27C8300D222CD54D0054262E /* SealClassPCH.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SealClassPCH.pch; sourceTree = "<group>"; };
@@ -228,6 +227,10 @@
 		9CB85C512240E2D10007230F /* InviteUpgradeMessage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InviteUpgradeMessage.m; sourceTree = "<group>"; };
 		9CB85C532241213C0007230F /* ControlDeviceNotifyMessage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ControlDeviceNotifyMessage.h; sourceTree = "<group>"; };
 		9CB85C542241213C0007230F /* ControlDeviceNotifyMessage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ControlDeviceNotifyMessage.m; sourceTree = "<group>"; };
+		A2C15F28226D9DA50076394C /* SettingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingView.h; sourceTree = "<group>"; };
+		A2C15F2A226D9DA50076394C /* SettingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingView.m; sourceTree = "<group>"; };
+		A2C15F2E226D9DD20076394C /* SettingResolutionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingResolutionCell.m; sourceTree = "<group>"; };
+		A2C15F2F226D9DD20076394C /* SettingResolutionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingResolutionCell.h; sourceTree = "<group>"; };
 		B11E33EFEC0711F117634317 /* Pods-SealClass.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SealClass.release.xcconfig"; path = "Pods/Target Support Files/Pods-SealClass/Pods-SealClass.release.xcconfig"; sourceTree = "<group>"; };
 		D52A017B2237851100B98EDF /* UIView+MBProgressHUD.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+MBProgressHUD.h"; sourceTree = "<group>"; };
 		D52A017C2237851100B98EDF /* UIView+MBProgressHUD.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+MBProgressHUD.m"; sourceTree = "<group>"; };
@@ -263,22 +266,11 @@
 		17AB2108222D17760043E43E /* Setting */ = {
 			isa = PBXGroup;
 			children = (
-				17AB2102222D06F80043E43E /* SettingViewController.h */,
-				17AB2103222D06F80043E43E /* SettingViewController.m */,
-				17AB2105222D114F0043E43E /* SelectResolutionController.h */,
-				17AB2106222D114F0043E43E /* SelectResolutionController.m */,
-				17AB2109222D17930043E43E /* Cell */,
+				A2C15F28226D9DA50076394C /* SettingView.h */,
+				A2C15F2A226D9DA50076394C /* SettingView.m */,
+				A2C15F2D226D9DC40076394C /* Cell */,
 			);
 			path = Setting;
-			sourceTree = "<group>";
-		};
-		17AB2109222D17930043E43E /* Cell */ = {
-			isa = PBXGroup;
-			children = (
-				17AB210A222D17B40043E43E /* SettingTableViewCell.h */,
-				17AB210B222D17B40043E43E /* SettingTableViewCell.m */,
-			);
-			path = Cell;
 			sourceTree = "<group>";
 		};
 		17E58B2B2237942F005BEB09 /* View */ = {
@@ -334,6 +326,15 @@
 				9CB85C542241213C0007230F /* ControlDeviceNotifyMessage.m */,
 			);
 			path = Message;
+			sourceTree = "<group>";
+		};
+		27BA8FD12283DDC800DFA817 /* ZoomControl */ = {
+			isa = PBXGroup;
+			children = (
+				27BA8FD32283DDC800DFA817 /* ZoomControl.h */,
+				27BA8FD22283DDC800DFA817 /* ZoomControl.m */,
+			);
+			path = ZoomControl;
 			sourceTree = "<group>";
 		};
 		27C83003222CC7DF0054262E /* Category */ = {
@@ -527,6 +528,7 @@
 		9CB85BEA223F48F30007230F /* View */ = {
 			isa = PBXGroup;
 			children = (
+				27BA8FD12283DDC800DFA817 /* ZoomControl */,
 				9CB85BEB223F48F30007230F /* Chat */,
 				9CB85C0D223F48F30007230F /* Title */,
 				9CB85C10223F48F30007230F /* VideoList */,
@@ -685,8 +687,20 @@
 				9CB85C2F223F48F30007230F /* MainContainerView.m */,
 				9CB85C30223F48F30007230F /* EmptyView.h */,
 				9CB85C32223F48F30007230F /* EmptyView.m */,
+				27BA8FD5228400C400DFA817 /* VideoMaskView.h */,
+				27BA8FD6228400C500DFA817 /* VideoMaskView.m */,
 			);
 			path = MainContainer;
+			sourceTree = "<group>";
+		};
+		A2C15F2D226D9DC40076394C /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				A2C15F2F226D9DD20076394C /* SettingResolutionCell.h */,
+				A2C15F2E226D9DD20076394C /* SettingResolutionCell.m */,
+			);
+			name = Cell;
+			path = "New Group";
 			sourceTree = "<group>";
 		};
 		BA3DCA1B18C3DD2A91B62754 /* Pods */ = {
@@ -832,8 +846,8 @@
 				9C1F8F63222566E700C848AB /* HTTPUtility.m in Sources */,
 				9CB85C37223F48F30007230F /* TimeStampCell.m in Sources */,
 				9CB85C33223F48F30007230F /* InputView.m in Sources */,
-				17AB210C222D17B40043E43E /* SettingTableViewCell.m in Sources */,
 				1797A5B0223BA6E2001BC52E /* RolePortraitView.m in Sources */,
+				A2C15F30226D9DD20076394C /* SettingResolutionCell.m in Sources */,
 				9C182C4B2227954D00409FA4 /* RoomMember.m in Sources */,
 				9CB85C3B223F48F30007230F /* MessageBaseCell.m in Sources */,
 				9CB85C522240E2D10007230F /* InviteUpgradeMessage.m in Sources */,
@@ -846,10 +860,10 @@
 				27ED9EA1223B4B65000E0644 /* TurnPageMessage.m in Sources */,
 				9C182C452227940F00409FA4 /* Classroom.m in Sources */,
 				9C1ED3FA223A073E004446A8 /* Whiteboard.m in Sources */,
+				A2C15F2C226D9DA50076394C /* SettingView.m in Sources */,
 				17E58B2F22379E91005BEB09 /* LoginHelper.m in Sources */,
 				9CB85C4A223F48F30007230F /* PersonListSectionView.m in Sources */,
 				9CB85C41223F48F30007230F /* ClassroomTitleView.m in Sources */,
-				17AB2104222D06F80043E43E /* SettingViewController.m in Sources */,
 				27DBEA1E223A4DC400E1E654 /* ApplySpeechResultMessage.m in Sources */,
 				9CB85C48223F48F30007230F /* PersonListCell.m in Sources */,
 				9C1CEFC52226BD57008C11BB /* RTCService.m in Sources */,
@@ -867,12 +881,13 @@
 				9CB85C552241213C0007230F /* ControlDeviceNotifyMessage.m in Sources */,
 				9CB85C44223F48F30007230F /* RecentSharedWhiteboardCell.m in Sources */,
 				27DBEA1B223A4B7F00E1E654 /* ApplySpeechMessage.m in Sources */,
+				27BA8FD7228400C500DFA817 /* VideoMaskView.m in Sources */,
 				2748EC3822379D86009D56F6 /* MemberChangeMessage.m in Sources */,
-				17AB2107222D114F0043E43E /* SelectResolutionController.m in Sources */,
 				9C1ED401223B46DF004446A8 /* IMService.m in Sources */,
 				9CB85C36223F48F30007230F /* EmojiBoardView.m in Sources */,
 				9CB85C42223F48F30007230F /* VideoListCell.m in Sources */,
 				1DD6FCAD222F72FB009F51CF /* WhiteboardView.m in Sources */,
+				27BA8FD42283DDC800DFA817 /* ZoomControl.m in Sources */,
 				9CB85C4E223F48F30007230F /* MainContainerView.m in Sources */,
 				9CB85C49223F48F30007230F /* PersonListView.m in Sources */,
 				9C1CEFAE22269AB8008C11BB /* ClassroomViewController.m in Sources */,

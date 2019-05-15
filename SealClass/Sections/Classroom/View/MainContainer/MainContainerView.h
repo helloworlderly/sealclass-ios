@@ -11,6 +11,12 @@
 #import "EmptyView.h"
 #import "RoomMember.h"
 
+@class MainContainerView;
+@protocol MainContainerViewDelegate <NSObject>
+- (void)mainContainerView:(MainContainerView *_Nullable)view scale:(CGFloat)scale;
+- (void)mainContainerView:(MainContainerView *_Nullable)view fullScreen:(BOOL)isFull;
+@end
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface MainContainerView : UIView
@@ -21,8 +27,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) RoomMember *member;
 
-//水平方向移动视频 view ，正数向右移动，负数向左移动
-- (void)moveVideoViewTo:(CGFloat)offset;
+@property (nonatomic, weak) id<MainContainerViewDelegate> delegate;
+
+@property (nonatomic, assign, readonly) BOOL isFullScreen;
+
+@property (nonatomic, readonly) CGRect currentVideoFrame;
 
 - (void)didChangeRole:(Role)role;
 

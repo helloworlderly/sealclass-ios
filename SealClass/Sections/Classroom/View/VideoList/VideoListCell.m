@@ -147,7 +147,7 @@
 }
 
 - (void)renderVideo:(RoomMember *)member {
-    if([[ClassroomService sharedService].currentRoom.currentDisplayURI isEqualToString:member.userId] || member.role == RoleAudience) {
+    if(![self canRenderVideo:member]) {
         return;
     }
     if([[ClassroomService sharedService].currentRoom.currentMemberId isEqualToString:member.userId]) {
@@ -166,6 +166,19 @@
     NSString * nameTxt = [[NSString alloc] init];
     nameTxt =  member.name.length > 5 ? [NSString stringWithFormat:@"%@...",[member.name substringToIndex:5]] : member.name;
     self.nameLable.text = nameTxt;
+}
+
+#pragma mark - private method
+//当前的 cell 是否可以渲染视频
+- (BOOL)canRenderVideo:(RoomMember *)member {
+    //主视频区渲染了该用户的视频，则 视频列表 cell 不显示视频
+    //旁观者不显示视频
+    //主视频区蒙版渲染了该用户的视频，则 视频列表 cell 不显示视频
+    Classroom *room = [ClassroomService sharedService].currentRoom;
+    if([room.currentDisplayURI isEqualToString:member.userId] || member.role == RoleAudience || [room.currentMaskUserId isEqualToString:member.userId]) {
+        return NO;
+    }
+    return YES;
 }
 
 - (UIView *)backGroundView {

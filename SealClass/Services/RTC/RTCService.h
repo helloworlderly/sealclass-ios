@@ -100,6 +100,14 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (BOOL)cancelRenderVideoInView:(UIView *)view;
 
+/**
+ 按照一定比例将视频裁剪
+ 
+ @param view 视频所在的父 view
+ @param scale 缩放比例
+ */
+- (void)clipVideoInView:(UIView *)view scale:(CGFloat)scale;
+
 #pragma mark 针对远端用户
 /**
  订阅远端用户的音视频流

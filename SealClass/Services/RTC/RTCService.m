@@ -14,7 +14,6 @@
 @property (nonatomic, strong) RongRTCRoom *rtcRoom;
 @property (nonatomic, strong) RongRTCAVCapturer *capturer;
 @property (nonatomic, strong) NSMutableDictionary *cachedVideoBufferDic;
-@property (nonatomic, strong) NSMutableDictionary *cachedVideoViewDic;
 @property (nonatomic, strong) UIImage *currentUserImage;
 @property (nonatomic, assign) BOOL needRefreshCurrentUserImage;
 @end
@@ -41,7 +40,6 @@
 
 #pragma mark - 发布/订阅音视频流
 - (void)joinRongRTCRoom:(NSString *)roomId success:(void (^)( RongRTCRoom  * _Nullable room))success error:(void (^)(RongRTCCode code))error {
-    self.cachedVideoViewDic = [NSMutableDictionary new];
     [[RongRTCEngine sharedEngine] joinRoom:roomId completion:^(RongRTCRoom * _Nullable room, RongRTCCode code) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if(RongRTCCodeSuccess == code) {
@@ -175,6 +173,29 @@
     return canceled;
 }
 
+- (void)clipVideoInView:(UIView *)view scale:(CGFloat)scale {
+    RongRTCVideoPreviewView *renderedView = nil;
+    for(UIView * v in view.subviews) {
+        if([v isKindOfClass:[RongRTCLocalVideoView class]] || [v isKindOfClass:[RongRTCRemoteVideoView class]]) {
+            renderedView = (RongRTCVideoPreviewView *)v;
+            break;
+        }
+    }
+    if(!renderedView) {
+        NSLog(@"未找到 RTC 视频渲染页面，无法裁剪");
+        return;
+    }
+    view.clipsToBounds = YES;
+    CGSize baseSize = view.frame.size;
+    baseSize.height *= scale;
+    baseSize.width *= scale;
+    CGPoint center = renderedView.center;
+    CGRect frame = renderedView.frame;
+    frame.size = baseSize;
+    renderedView.frame = frame;
+    renderedView.center = center;
+}
+
 
 - (void)subscribeRemoteUserAVStream:(RongRTCRemoteUser *)remoteUser {
     if(!self.rtcRoom || remoteUser.remoteAVStreams.count <= 0) {
@@ -204,12 +225,8 @@
     }
     for(RongRTCAVInputStream *stream in remoteUser.remoteAVStreams) {
         if(RTCMediaTypeVideo == stream.streamType && ![stream.tag isEqualToString:SharedScreenStreamTag]) {
-            RongRTCRemoteVideoView *remoteView = [self.cachedVideoViewDic valueForKey:remoteUser.userId];
-            if(!remoteView) {
-                remoteView = [[RongRTCRemoteVideoView alloc] initWithFrame:view.bounds];
-                remoteView.backgroundColor = [UIColor colorWithHexString:@"3D4041" alpha:1];
-                [self.cachedVideoViewDic setValue:remoteView forKey:remoteUser.userId];
-            }
+            RongRTCRemoteVideoView *remoteView = [[RongRTCRemoteVideoView alloc] initWithFrame:view.bounds];
+            remoteView.backgroundColor = [UIColor colorWithHexString:@"3D4041" alpha:1];
             remoteView.frame = view.bounds;
             remoteView.fillMode = RCVideoFillModeAspectFill;
             stream.delegate = self;

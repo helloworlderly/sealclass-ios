@@ -86,7 +86,6 @@
 
 - (void)leaveRoom {
     [[ClassroomService sharedService] leaveClassroom];
-    [[RCIMClient sharedRCIMClient] disconnect];
 }
 
 #pragma mark - RCConnectionStatusChangeDelegate

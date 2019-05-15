@@ -11,7 +11,7 @@
 "OpenVideo"="加入时关闭视频";
 "ClassId"="输入课堂 ID";
 "UserName"="输入姓名";
-"Resolution"="分辨率";
+"Resolution"="分辨率:";
 "Setting"="设置";
 "LoginFail"="加入失败";
 "OnlinePerson" = "在线成员";
@@ -104,3 +104,5 @@
 "Send"="发送";
 "cameraAvailable" = "请在设置中开启系统摄像头权限";
 "microphoneAvailable" = "请在设置中开启系统麦克风权限";
+"RecentSharedScale"="当前共享画布展示比例 %d%%";
+

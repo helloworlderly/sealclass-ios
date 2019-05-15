@@ -23,14 +23,15 @@
 #import "NormalAlertView.h"
 #import "LoginHelper.h"
 #import "WhiteboardPopupView.h"
+#import "VideoMaskView.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 #define ToolPanelViewWidth    49
 #define TitleViewHeight  64
-#define RecentSharedViewWidth  133
+#define RecentSharedViewWidth  240
 #define PersonListViewWidth    240
 #define VideoListViewWidth    112
 
-@interface ClassroomViewController ()<ClassroomTitleViewDelegate, ToolPanelViewDelegate, RongRTCRoomDelegate, WhiteboardControlDelegate, ClassroomDelegate, RecentSharedViewDelegate, UpgradeDidApplyViewDelegate,UIGestureRecognizerDelegate>
+@interface ClassroomViewController ()<ClassroomTitleViewDelegate, ToolPanelViewDelegate, RongRTCRoomDelegate,MainContainerViewDelegate,VideoListViewDelegate, WhiteboardControlDelegate, ClassroomDelegate, RecentSharedViewDelegate, UpgradeDidApplyViewDelegate,UIGestureRecognizerDelegate>
 @property (nonatomic, strong) ClassroomTitleView *titleView;
 @property (nonatomic, strong) ToolPanelView *toolPanelView;
 @property (nonatomic, strong) RecentSharedView *recentSharedView;
@@ -40,6 +41,8 @@
 @property (nonatomic, strong) WhiteboardControl *wBoardCtrl;
 @property (nonatomic, strong) ChatAreaView *chatAreaView;
 @property (nonatomic, strong) MBProgressHUD *hud;
+@property (nonatomic, strong) WhiteboardPopupView *popupView;
+@property (nonatomic, strong) VideoMaskView *maskView;
 @end
 
 @implementation ClassroomViewController
@@ -60,23 +63,19 @@
 }
 
 - (void)tapGesture: (UITapGestureRecognizer *)tapGesture{
-    for (UIButton *button in self.toolPanelView.buttonArray) {
-        if (button.tag == ToolPanelViewActionTagVideoList || button.tag == ToolPanelViewActionTagOnlinePerson || button.tag == ToolPanelViewActionTagClassNews || button.tag == ToolPanelViewActionTagRecentlyShared) {
-            if (button.selected) {
-                button.selected = NO;
-            }
-        }
-    }
-    [self hideVideoListView];
+    [self.toolPanelView foldToolPanelView];
     [self hidePersonListView];
-    [self hideChatAreaView];
     [self hideRecentSharedView];
     [self refreshWboardFrame];
+    [self.popupView destroy];
 }
 
 -(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch{
-    if ([touch.view isDescendantOfView:self.personListView] || [touch.view isDescendantOfView:self.videoListView] || [touch.view isDescendantOfView:self.recentSharedView]) {
+    if ([touch.view isDescendantOfView:self.personListView] || [touch.view isDescendantOfView:self.recentSharedView] || [touch.view isDescendantOfView:self.videoListView] || [touch.view isDescendantOfView:self.popupView]) {
         return NO;
+    }
+    if ([touch.view isDescendantOfView:self.wBoardCtrl.wbView] || [touch.view isDescendantOfView:self.containerView] || [touch.view isDescendantOfView:self.popupView]) {
+        [self tapGesture:(UITapGestureRecognizer *)gestureRecognizer];
     }
     return YES;
 }
@@ -175,17 +174,16 @@
     switch (tag) {
         case ToolPanelViewActionTagWhiteboard:
             if (button.selected) {
-                button.selected = !button.selected;
-                WhiteboardPopupView *popupView = [[WhiteboardPopupView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.toolPanelView.frame)+6, 50+25, 97, 44) shapePointY:44/2 items:@[@"新建白板"] didSelectItem:^(NSInteger index, NSString *item) {
+                self.popupView = [[WhiteboardPopupView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.toolPanelView.frame)+6, LLeftToolViewTop-(44-LLeftButtonWidht)/2, 97, 44) shapePointY:44/2 items:@[@"新建白板"] inView:self.view didSelectItem:^(NSInteger index, NSString *item) {
                     switch (index) {
                         case 0:
+                            [self.toolPanelView foldToolPanelView];
                             [[ClassroomService sharedService] createWhiteboard];
                             break;
                         default:
                             break;
                     }
                 }];
-                [[UIApplication sharedApplication].keyWindow addSubview:popupView];
             }
             break;
         case ToolPanelViewActionTagRecentlyShared: {
@@ -201,20 +199,11 @@
             break;
         case ToolPanelViewActionTagOnlinePerson:
             button.selected ? [self showPersonListView] : [self hidePersonListView];
-            
             break;
-        case ToolPanelViewActionTagVideoList: {
-            if(button.selected) {
-                [self showVideoListView];
-            }else {
-                [self hideVideoListView];
-            }
-        }
-            
+        case ToolPanelViewActionTagVideoList:
             break;
         case ToolPanelViewActionTagClassNews:
             button.selected ? [self showChatAreaView] : [self hideChatAreaView];
-            
             break;
         default:
             
@@ -226,9 +215,67 @@
 - (void)hideAllSubviewsOfToolPanelView {
     [self hideRecentSharedView];
     [self hidePersonListView];
-    [self hideVideoListView];
     [self hideChatAreaView];
+    [self.popupView destroy];
 }
+
+#pragma mark - MainContainerViewDelegate
+- (void)mainContainerView:(MainContainerView *)view fullScreen:(BOOL)isFull {
+    [self renderMainContainerView];
+}
+
+- (void)mainContainerView:(MainContainerView *)view scale:(CGFloat)scale {
+    [[RTCService sharedInstance] clipVideoInView:self.containerView.videoView scale:scale];
+    [self.view showHUDMessage:[NSString stringWithFormat:NSLocalizedStringFromTable(@"RecentSharedScale", @"SealClass", nil),(int)(scale*100)]];
+}
+
+#pragma mark - VideoListViewDelegate
+- (void)videoListView:(VideoListView *)view didTap:(RoomMember *)member {
+    [self removeMaskViewIfNeed];
+    NSString *currentMaskUserId = member.userId;
+    NSString *lastMaskUserId = [ClassroomService sharedService].currentRoom.currentMaskUserId;
+    [ClassroomService sharedService].currentRoom.currentMaskUserId = currentMaskUserId;
+    VideoMaskView *maskV = [[VideoMaskView alloc] initWithFrame:self.containerView.videoView.frame];
+    [maskV addDismisTarget:self action:@selector(dismissMaskViewEvent)];
+    
+    Classroom *room = [ClassroomService sharedService].currentRoom;
+    if([member.userId isEqualToString:room.currentDisplayURI]) {
+        return;
+    }
+    if([[ClassroomService sharedService].currentRoom.currentMemberId isEqualToString:member.userId]) {
+        [[RTCService sharedInstance] renderLocalVideoOnView:maskV.maskVideoView cameraEnable:room.currentMember.cameraEnable];
+    }else {
+        [[RTCService sharedInstance] renderRemoteVideoOnView:maskV.maskVideoView forUser:member.userId];
+    }
+    CGPoint center = [self.view convertPoint:self.containerView.videoView.center fromView:self.containerView];
+    maskV.center = center;
+    self.maskView = maskV;
+    [self.view addSubview:maskV];
+    [self.videoListView updateUserVideo:lastMaskUserId];
+    [self.videoListView updateUserVideo:currentMaskUserId];
+}
+
+- (void)dismissMaskViewEvent {
+    NSString *currentMaskUserId = [ClassroomService sharedService].currentRoom.currentMaskUserId ;
+    if(currentMaskUserId) {
+        [self.videoListView updateUserVideo:currentMaskUserId];
+    }
+    [ClassroomService sharedService].currentRoom.currentMaskUserId = nil;
+    [self removeMaskViewIfNeed];
+}
+
+- (void)removeMaskViewIfNeed {
+    [self.maskView removeFromSuperview];
+}
+
+- (void)cancelRenderMaskViewIfNeed {
+    NSString *curDisplayUri = [ClassroomService sharedService].currentRoom.currentDisplayURI;
+    NSString *curMaskUserId = [ClassroomService sharedService].currentRoom.currentMaskUserId;
+    if([curMaskUserId isEqualToString:curDisplayUri]) {
+             [self.maskView cancelRenderView];
+    }
+}
+
 
 #pragma mark - RecentSharedViewDelegate
 - (void)recentSharedViewCellTap:(id)recentShared {
@@ -273,6 +320,10 @@
 - (void)didTurnPage:(NSInteger)pageNum {
 }
 
+- (void)whiteboardViewDidChangeZoomScale:(float)scale{
+    [self.view showHUDMessage:[NSString stringWithFormat:NSLocalizedStringFromTable(@"RecentSharedScale", @"SealClass", nil),(int)(scale*100)]];
+}
+
 #pragma mark - ClassroomDelegate
 - (void)roomDidLeave {
     NSLog(@"roomDidLeave");
@@ -283,8 +334,8 @@
         } error:^(RongRTCCode code) {
             
         }];
-        [[RCIMClient sharedRCIMClient] disconnect];
     }
+    [[RCIMClient sharedRCIMClient] disconnect];
     [self dismissViewControllerAnimated:NO completion:^{
         [self.titleView stopDurationTimer];
     }];
@@ -579,11 +630,13 @@
 
 - (void)teacherDidDisplay {
     NSLog(@"teacherDidDisplay %@ ",[ClassroomService sharedService].currentRoom.teacher);
+    [self cancelRenderMaskViewIfNeed];
     [self renderMainContainerView];
 }
 
 - (void)assistantDidDisplay {
     NSLog(@"assistantDidDisplay %@ ",[ClassroomService sharedService].currentRoom.assistant);
+    [self cancelRenderMaskViewIfNeed];
     [self renderMainContainerView];
 }
 
@@ -607,16 +660,12 @@
 }
 
 - (void)addSubviews {
+    [self.view addSubview:self.containerView];
     [self.view addSubview:self.titleView];
     [self.view addSubview:self.toolPanelView];
-    [self.view addSubview:self.containerView];
+    [self wBoardCtrl];
     [self chatAreaView];
     [self.view addSubview:self.videoListView];
-    for (UIButton *button in self.toolPanelView.buttonArray) {
-        if (button.tag == ToolPanelViewActionTagVideoList) {
-            button.selected = YES;
-        }
-    }
 }
 
 - (void)showRecentSharedView {
@@ -625,10 +674,6 @@
 
 - (void)showPersonListView {
     [self.view addSubview:self.personListView];
-}
-
-- (void)showVideoListView {
-    [self.view addSubview:self.videoListView];
 }
 
 - (void)showChatAreaView{
@@ -643,10 +688,6 @@
     [self.personListView removeFromSuperview];
 }
 
-- (void)hideVideoListView {
-    [self.videoListView removeFromSuperview];
-}
-
 - (void)hideChatAreaView{
     [UIView animateWithDuration:0.2 animations:^{
         [self.chatAreaView removeFromSuperview];
@@ -654,8 +695,8 @@
 }
 
 - (CGRect)mainContainerFrame {
-    CGFloat x = CGRectGetMaxX(self.toolPanelView.frame);
-    CGFloat y = TitleViewHeight;
+    CGFloat x = CGRectGetMinX(self.toolPanelView.frame);
+    CGFloat y = CGRectGetMinY(self.titleView.frame);
     CGFloat width = UIScreenWidth - x;
     CGFloat height = UIScreenHeight - y;
     return CGRectMake(x, y, width, height);
@@ -668,28 +709,19 @@
 
 - (void)displayWhiteboard:(NSString *)boardId {
     NSString *urlStr = [[ClassroomService sharedService] generateWhiteboardURL:boardId];
-    [self.wBoardCtrl loadWBoardWith:boardId wBoardURL:urlStr superView:self.view frame:CGRectZero];
+    [self.wBoardCtrl loadWBoardWith:boardId wBoardURL:urlStr frame:CGRectZero];
     [self refreshWboardFrame];
     for (UIView * view in self.view.subviews) {
-        if ([view isKindOfClass:[PersonListView class]]) {
+        if ([view isKindOfClass:[PersonListView class]] || [view isKindOfClass:[ChatAreaView class]]) {
             [self.view bringSubviewToFront:view];
         }
     }
 }
 
 - (void)refreshWboardFrame {
-    CGRect rect;
-    CGRect mainContainRect = [self mainContainerFrame];
-    CGFloat originX = (mainContainRect.size.width-RecentSharedViewWidth-750/2)/2+CGRectGetMaxX(self.toolPanelView.frame);
-    CGFloat originY = (UIScreenHeight-TitleViewHeight-563/2)/2+TitleViewHeight;
-    if (self.recentSharedView.superview) {
-        rect = CGRectMake(originX+90, originY, 750/2, 563/2);
-        [self.containerView moveVideoViewTo:90];
-    }else{
-        rect = CGRectMake(originX, originY, 750/2, 563/2);
-        [self.containerView moveVideoViewTo:0];
-    }
-    [self.wBoardCtrl setWBoardFrame:rect];
+    CGRect mainVideoFrame = self.containerView.currentVideoFrame;
+    mainVideoFrame.origin.x += self.toolPanelView.frame.origin.x;
+    [self.wBoardCtrl setWBoardFrame:mainVideoFrame];
 }
 
 - (CGFloat)getIphoneXFitSpace{
@@ -755,7 +787,7 @@
 
 - (RecentSharedView *)recentSharedView {
     if(!_recentSharedView) {
-        _recentSharedView = [[RecentSharedView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.toolPanelView.frame), 0, RecentSharedViewWidth, UIScreenHeight)];
+        _recentSharedView = [[RecentSharedView alloc] initWithFrame:CGRectMake(UIScreenWidth - RecentSharedViewWidth, 0, RecentSharedViewWidth, UIScreenHeight)];
         _recentSharedView.delegate = self;
     }
     return _recentSharedView;
@@ -771,6 +803,7 @@
 - (VideoListView *)videoListView {
     if(!_videoListView) {
         _videoListView = [[VideoListView alloc] initWithFrame:CGRectMake(UIScreenWidth - VideoListViewWidth - 20, TitleViewHeight, VideoListViewWidth, UIScreenHeight - TitleViewHeight)];
+        _videoListView.delegate = self;
     }
     return _videoListView;
 }
@@ -778,6 +811,7 @@
 - (MainContainerView *)containerView {
     if(!_containerView) {
         _containerView = [[MainContainerView alloc] initWithFrame:[self mainContainerFrame]];
+        _containerView.delegate = self;
     }
     return _containerView;
 }
@@ -792,6 +826,7 @@
 - (WhiteboardControl *)wBoardCtrl {
     if (!_wBoardCtrl) {
         _wBoardCtrl = [[WhiteboardControl alloc] initWithDelegate:self];
+        [_wBoardCtrl moveToSuperView:self.view];
     }
     return _wBoardCtrl;
 }

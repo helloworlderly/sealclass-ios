@@ -432,8 +432,13 @@
 
 - (void)display:(DisplayType)type
        withInfo:(NSString *)info {
+    SealClassLog(@"display:%ld,info:%@,currentRoom.roomId=%@",type,info,self.currentRoom.roomId);
     if (![self checkWhetherInRoom]) {
         [self callbackFailureDescription:ErrorCodeUserNotExistInRoom];
+        return;
+    }
+    if (info.length == 0 || self.currentRoom.roomId.length == 0) {
+        [self callbackFailureDescription:ErrorCodeParameterError];
         return;
     }
     NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];

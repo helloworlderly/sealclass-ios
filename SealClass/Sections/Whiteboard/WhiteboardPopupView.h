@@ -32,7 +32,10 @@ typedef void(^SelectItemBlock)(NSInteger index, NSString *item);
 - (instancetype)initWithFrame:(CGRect)frame
                   shapePointY:(CGFloat)shapePointY
                         items:(NSArray<NSString *> *)items
+                       inView:(UIView *)superView
                 didSelectItem:(SelectItemBlock)didSelectItem;
+
+- (void)destroy;
 
 @end
 

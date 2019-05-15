@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol WhiteboardViewDelegate<NSObject>
 - (void)didTurnPage:(NSInteger)pageNum;
+- (void)whiteboardViewDidChangeZoomScale:(float)scale;
 @end
 
 @interface WhiteboardView : UIView

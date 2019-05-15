@@ -17,7 +17,6 @@
 @property(nonatomic, strong) UITableView *itemListView;
 @property(nonatomic, assign) CGFloat shapePointY;
 @property(nonatomic, copy) SelectItemBlock selectItemBlock;
-@property(nonatomic, strong) UIView *backGroundView;
 
 @end
 
@@ -26,18 +25,15 @@
 - (instancetype)initWithFrame:(CGRect)frame
                   shapePointY:(CGFloat)shapePointY
                         items:(NSArray<NSString *> *)items
-                didSelectItem:(SelectItemBlock)didSelectItem{
+                       inView:(nonnull UIView *)superView
+                didSelectItem:(nonnull SelectItemBlock)didSelectItem{
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor = [UIColor clearColor];
         self.items = items;
         self.shapePointY = shapePointY;
         self.selectItemBlock = didSelectItem;
-        UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
-        [keyWindow addSubview:self.backGroundView];
-        [self.backGroundView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.mas_equalTo(keyWindow);
-        }];
+        [superView addSubview:self];
         [self addSubview:self.itemListView];
         [self.itemListView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.bottom.right.mas_equalTo(self);
@@ -70,7 +66,6 @@
 }
 
 - (void)destroy {
-    [self.backGroundView removeFromSuperview];
     [self removeFromSuperview];
 }
 
@@ -111,8 +106,7 @@
     if (self.selectItemBlock) {
         self.selectItemBlock(indexPath.row, item);
     }
-    [self.backGroundView removeFromSuperview];
-    [self removeFromSuperview];
+    [self destroy];
 }
 
 #pragma mark - Getters
@@ -131,17 +125,4 @@
     }
     return _itemListView;
 }
-
-- (UIView *)backGroundView {
-    if (!_backGroundView) {
-        _backGroundView = [[UIView alloc] init];
-        _backGroundView.backgroundColor = [UIColor clearColor];
-        UITapGestureRecognizer *tapGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(destroy)];
-        UIPanGestureRecognizer *panGes = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(destroy)];
-        [_backGroundView addGestureRecognizer:tapGes];
-        [_backGroundView addGestureRecognizer:panGes];
-    }
-    return _backGroundView;
-}
-
 @end
