@@ -3,7 +3,7 @@
 
 **前期准备**
 
-1. [注册融云开发者](https://www.rongcloud.cn)，创建应用后获取 APPKey。
+1. [注册融云开发者](https://developer.rongcloud.cn/signup/?utm_source=demogithub&utm_term=demosign)，创建应用后获取 APPKey。
 
 2. 开通音视频服务。[查看音视频计费明细](https://www.rongcloud.cn/docs/call.html#billing)
 
