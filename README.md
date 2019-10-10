@@ -16,30 +16,30 @@
 	参见源码中 `AppDelegate.m`,`HTTPUtility.m`，其中 `APPKey 和 BASE_URL 为必填项`
 5.	运行 SealClass
 
-SealClass 是用 cocoaPods 管理融云 SDK 库和其他第三方库，下载完源码后，按照下面步骤操作
+    SealClass 是用 cocoaPods 管理融云 SDK 库和其他第三方库，下载完源码后，按照下面步骤操作
 
-（1）终端进入 Podfile 目录
+   （1）终端进入 Podfile 目录
 
-（2）更新本地 CocoaPods 的本地仓库，终端执行下面命令
+   （2）更新本地 CocoaPods 的本地仓库，终端执行下面命令
 
-```
-$ pod repo update
-```
-（3）下载 Podfile 中的依赖库，终端执行下面命令
+      ```
+    $ pod repo update
+      ```
+   （3）下载 Podfile 中的依赖库，终端执行下面命令
 
-```
-$ pod install
-```
+   ```
+   $ pod install
+   ```
 
-`注意`
+  `注意`
 
-![](./images/Image3.png)
+   ![](./images/Image3.png)
 
-如果出现这样的编译失败问题请进入终端，在 SealClass.xcodeproj 的同级目录下执行下面命令
+   如果出现这样的编译失败问题请进入终端，在 SealClass.xcodeproj 的同级目录下执行下面命令
 
-`git checkout -- SealClass.xcodeproj/project.pbxproj`
+  `git checkout -- SealClass.xcodeproj/project.pbxproj`
 
-问题的原因是不同版本的 pod 对 xcode 配置文件的处理是不一致的，会导致某些文件找不到，执行上面命令清空本地对 SealClass.xcodeproj/project.pbxproj 修改，避免冲突
+   问题的原因是不同版本的 pod 对 xcode 配置文件的处理是不一致的，会导致某些文件找不到，执行上面命令清空本地对 SealClass.xcodeproj/project.pbxproj 修改，避免冲突
 
 ## 代码目录介绍
 iOS 端整体目录结构主要由 Sections，Services，Util，Resources 四个部分组成。
